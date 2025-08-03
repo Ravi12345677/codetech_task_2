@@ -1,0 +1,33 @@
+@model List<PerformanceMetric>
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h2>Application Performance Dashboard</h2>
+
+    <canvas id="metricsChart" width="600" height="400"></canvas>
+
+    <script>
+        const labels = @Html.Raw(Json.Serialize(Model.Select(m => m.MetricName)));
+        const data = @Html.Raw(Json.Serialize(Model.Select(m => m.Value)));
+
+        const ctx = document.getElementById('metricsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Metric Values',
+                    data: data,
+                    backgroundColor: ['blue', 'orange', 'red']
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
